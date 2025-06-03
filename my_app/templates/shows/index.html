@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{% static 'css/shows/show-index.css' %}"
+/>
+{% endblock %} {% block content %}
+
+<section class="page-header">
+  <h1>Show List</h1>
+  <a href="{% url 'show-create' %}" class="btn submit">Add a Show</a>
+</section>
+
+<section class="card-container">
+  {% for show in shows %}
+    <div class="card">
+      <a href="{% url 'show-detail' show.id %}">
+        <div class="card-content">
+          <div class="card-img-container">
+            <img
+              src="{% static 'images/tv-icon.png' %}"
+              alt="TV Show Icon"
+            />
+          </div>
+          <h2 class="card-title">{{ show.title }}</h2>
+          <p><strong>Platform:</strong> {{ show.streaming_platform }}</p>
+          <p><strong>Genres:</strong> 
+            {% for genre in show.genres %}
+              {{ genre }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+          <p><small>{{ show.description|truncatewords:20 }}</small></p>
+          {% if show.reviews.count %}
+            <p><strong>Reviews:</strong> {{ show.reviews.count }}</p>
+          {% else %}
+            <p><em>No reviews yet</em></p>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+  {% empty %}
+    <p>No shows yet. <a href="{% url 'show-create' %}">Add your first show!</a></p>
+  {% endfor %}
+</section>
+
+{% endblock %}

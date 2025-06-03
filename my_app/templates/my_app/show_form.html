@@ -1,0 +1,26 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
+{% endblock %} 
+{% block content %}
+
+<div class="page-header">
+    <!-- Check if a show object exists to determine if we're editing -->
+  {% if show %}
+    <h1>Edit {{ show.title }}</h1>
+  {% else %}
+    <h1>Add a Show</h1>
+  {% endif %}
+  <img src="{% static 'images/tv-icon.png' %}" alt="TV Show Icon" />
+</div>
+
+<form action="" method="post" class="form-container">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <button type="submit" class="btn submit">Submit!</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static 'css/shows/show-detail.css' %}" />
+{% endblock %} {% block content %}
+
+<section class="show-container">
+  <div class="show-img">
+    <img src="{% static 'images/tv-icon.png' %}" alt="TV Show Icon" />
+  </div>
+  <div class="show-details">
+    <h1>{{ show.title }}</h1>
+    <h2>{{ show.streaming_platform }}</h2>
+    <p><strong>Genres:</strong> 
+      {% for genre in show.genres %}
+        {{ genre }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p>{{ show.description }}</p>
+
+    <div class="show-actions">
+      <a href="{% url 'show-update' show.id %}" class="btn warn">Edit</a>
+      <a href="{% url 'show-delete' show.id %}" class="btn danger">Delete</a>
+    </div>
+  </div>
+</section>
+
+<div class="reviews-container">
+  <section class="reviews">
+    <div class="subsection-title">
+      <h2>Reviews</h2>
+    </div>
+
+    <h3>Add a Review</h3>
+    <form
+      action="{% url 'add-review' show.id %}"
+      method="post"
+      class="subsection-content"
+      autocomplete="off"
+    >
+      {% csrf_token %} {{ review_form.as_p }}
+      <button type="submit" class="btn submit">Add Review</button>
+    </form>
+
+    <h3>Past Reviews</h3>
+    {% if show.reviews.all.count %}
+    <table>
+      <thead>
+        <tr>
+          <th>Date Watched</th>
+          <th>Rating</th>
+          <th>Opinion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in show.reviews.all %}
+        <tr>
+          <td>{{ review.date_watched }}</td>
+          <td>{{ review.rating }}/5 ⭐</td>
+          <td>{{ review.opinion|truncatewords:15 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="subsection-content">
+      <p>⚠️ No reviews for {{ show.title }} yet!</p>
+    </div>
+    {% endif %}
+  </section>
+</div>
+
+{% endblock %}
