@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static 'css/shows/show-index.css' %}" />
+{% endblock %} {% block content %}
+
+<section class="page-header">
+  <h1>Shows List</h1>
+  <img src="{% static 'images/shows_banner.jpeg' %}" alt="A banner" />
+</section>
+
+<section class="card-container">
+  {% for show in shows %}
+  <div class="card">
+    <div class="card-content">
+      <div class="card-img-container">
+        <img src="{% static 'images/tv.png' %}" alt="A television" />
+      </div>
+      <h2 class="card-title">{{ show.title }}</h2>
+      <p><strong>Description:</strong> {{ show.description }}</p>
+      <p><strong>Streaming on:</strong> {{ show.streaming_platform }}</p>
+      <p><strong>Genres:</strong></p>
+      <p>
+        <small>{% for genre in show.genres %} {{ genre }} {% endfor %}</small>
+      </p>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
